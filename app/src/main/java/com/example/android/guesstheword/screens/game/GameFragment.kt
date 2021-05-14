@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -68,17 +69,29 @@ class GameFragment : Fragment() {
             binding.wordText.text = newWord.toString()
         })
 
+        viewModel.eventGameFinished.observe(viewLifecycleOwner, Observer { hasFinished ->
+            if (hasFinished){
+                val currentScore = viewModel.score.value ?: 0
+                val action = GameFragmentDirections.actionGameToScore(currentScore)
+                findNavController(this).navigate(action)
+                viewModel.onGameFinishComplete()
+
+            }
+        })
+
 
         return binding.root
 
     }
 
 
-    fun gameFinished() {
-        val currentScore = viewModel.score.value ?: 0
-        val action = GameFragmentDirections.actionGameToScore(currentScore)
-        findNavController(this).navigate(action)
-    }
+//    fun gameFinished() {
+//        val currentScore = viewModel.score.value ?: 0
+//        val action = GameFragmentDirections.actionGameToScore(currentScore)
+//        findNavController(this).navigate(action)
+//
+//        Toast.makeText(this.activity,"GameFinished Called", Toast.LENGTH_SHORT).show()
+//    }
 
 
 

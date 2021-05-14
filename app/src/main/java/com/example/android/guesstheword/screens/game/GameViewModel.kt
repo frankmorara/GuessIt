@@ -14,6 +14,12 @@ class GameViewModel: ViewModel() {
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
     get() = _score
+
+
+    private val _eventGameFinished = MutableLiveData<Boolean>()
+    val eventGameFinished: LiveData<Boolean>
+    get() = _eventGameFinished
+
     private lateinit var wordList: MutableList<String>
 
     init {
@@ -22,6 +28,7 @@ class GameViewModel: ViewModel() {
         nextWord()
         _score.value = 0
         _word.value = ""
+        _eventGameFinished.value = false
     }
 
     override fun onCleared() {
@@ -64,6 +71,7 @@ class GameViewModel: ViewModel() {
         //Select and remove a word from the list
         if (wordList.isEmpty()) {
 //            gameFinished()
+            _eventGameFinished.value = true
         } else {
             _word.value = wordList.removeAt(0)
         }
@@ -77,6 +85,9 @@ class GameViewModel: ViewModel() {
     fun onCorrect() {
         _score.value = (score.value)?.plus(1)
         nextWord()
+    }
+    fun onGameFinishComplete(){
+        _eventGameFinished.value = false
     }
 
 }
