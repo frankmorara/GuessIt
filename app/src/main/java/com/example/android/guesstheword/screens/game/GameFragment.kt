@@ -61,6 +61,7 @@ class GameFragment : Fragment() {
 
 
         }
+        binding.gameViewModel = viewModel
 
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             binding.scoreText.text = newScore.toString()
